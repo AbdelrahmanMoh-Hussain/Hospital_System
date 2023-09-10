@@ -3,36 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Hospital_System
 {
-    internal class Patient
+    public class Patient
     {
-        private string name;
-        private int status;
-        private string requestedSpecialization;
 
-        public Patient(string name, int status, string requestedSpecialization)
+        public Patient(string name,string requestedDepartment)
         {
-            this.name = name;
-            this.status = status;
-            this.requestedSpecialization = requestedSpecialization;
+            Name = name;
+            RequestedDepartment = requestedDepartment;
         }
 
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-        public int Status
-        {
-            get { return status; }
-            set { status = value; }
-        }
-        public string RequestedSpecialization
-        {
-            get { return requestedSpecialization; }
-            set { requestedSpecialization = value; }
-        }
+        public string Name { get; private set; }
+        public string RequestedDepartment { get; private set; }
     }
 }

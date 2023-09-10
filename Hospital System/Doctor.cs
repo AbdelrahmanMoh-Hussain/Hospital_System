@@ -8,31 +8,25 @@ namespace Hospital_System
 {
     internal class Doctor
     {
-        private Specialization requestedSpecialization;
-
-        public Specialization RequestedSpecialization
+        public Doctor(Specialization requestedSpecialization)
         {
-            get { return requestedSpecialization; }
-            set { requestedSpecialization = value; }
+            RequestedSpecialization = requestedSpecialization;
         }
+
+        public Specialization RequestedSpecialization { get; private set; }
+
         public void GetNewPatient()
         {
-            if (this.requestedSpecialization.WatingUrgentPatients.Count != 0)
+            if (RequestedSpecialization.Patients.Count != 0)
             {
-                var patient = this.requestedSpecialization.WatingUrgentPatients.Dequeue();
+                var patient = RequestedSpecialization.Patients.Dequeue();
                 Console.WriteLine($"{patient.Name} please go with the doctor");
-                this.requestedSpecialization.AvailableSpots++;
-            }
-            else if (this.requestedSpecialization.WatingRegularPatients.Count != 0)
-            {
-                var patient = this.requestedSpecialization.WatingRegularPatients.Dequeue();
-                Console.WriteLine($"{patient.Name} please go with the doctor");
-                this.requestedSpecialization.AvailableSpots++;
+                RequestedSpecialization.AvailableSpots++;
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"No Patient in {this.requestedSpecialization.Name} specialization right now");
+                Console.WriteLine($"No Patient in {RequestedSpecialization.Name} specialization right now");
                 Console.ForegroundColor = ConsoleColor.White;
             }
         }

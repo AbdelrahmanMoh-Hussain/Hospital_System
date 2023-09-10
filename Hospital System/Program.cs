@@ -21,8 +21,7 @@
                     Console.WriteLine("Hello, Doctor ");
                     Console.Write("Enter specialization: ");
                     var doctorSpecialization = Console.ReadLine();
-                    Doctor doctor = new Doctor();
-                    doctor.RequestedSpecialization = specializations[doctorSpecialization];
+                    Doctor doctor = new Doctor(specializations[doctorSpecialization]);
                     doctor.GetNewPatient();
                 }
                 else if (keyPressed == "2")
@@ -31,14 +30,27 @@
                     Console.WriteLine("Enter your info: ");
                     Console.Write("Name: ");
                     var name = Console.ReadLine();
-                    Console.Write("Status: ");
-                    var status = int.Parse(Console.ReadLine());
-                    Console.Write("Requested specialization: ");
-                    var requestedSpecialization = Console.ReadLine();
-                    Patient patient = new Patient(name, status, requestedSpecialization);
+                    Console.Write("Status(0 for Regular - 1 for Urgent): ");
+                    var status = (Console.ReadLine() == "0" ? PatientStatus.Regular : PatientStatus.Urgent);
+                    Console.Write("Requested department: ");
+                    var requestedDepartment = Console.ReadLine();
 
-                    specializations[patient.RequestedSpecialization].Add(patient);
-                    specializations[patient.RequestedSpecialization].displayPatients();
+                    Patient patient;
+                    switch (status)
+                    {
+                        case PatientStatus.Regular:
+                            patient = new RegularPatient(name, requestedDepartment);
+                            break;
+                        case PatientStatus.Urgent:
+                            patient = new UrgentPatient(name, requestedDepartment);
+                            break;
+                        default:
+                            patient = new RegularPatient(name, requestedDepartment);
+                            break;
+                    }
+
+                    specializations[patient.RequestedDepartment].Add(patient);
+                    specializations[patient.RequestedDepartment].displayPatients();
                 }
                 else
                     break;

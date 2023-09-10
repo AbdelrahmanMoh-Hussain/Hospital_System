@@ -8,39 +8,21 @@ namespace Hospital_System
 {
     internal class Specialization
     {
-        private string name;
-        private int availableSpots;
-        private Queue<Patient> watingRegularPatients;
-        private Queue<Patient> watingUrgentPatients;
+        private const int MAXIMUM_SPOT_NUMBER = 5;
 
-        public string Name
-        {
-            get { return name; }
-        }
-        public int AvailableSpots
-        {
-            get { return availableSpots; }
-            set { availableSpots = value; }
-        }
-        public Queue<Patient> WatingRegularPatients
-        {
-            get { return watingRegularPatients; }
-        }
-        public Queue<Patient> WatingUrgentPatients
-        {
-            get { return watingUrgentPatients; }
-        }
         public Specialization(string name)
         {
-            this.name = name;
-            this.availableSpots = 5;
-            this.watingRegularPatients = new Queue<Patient>();
-            this.watingUrgentPatients = new Queue<Patient>();
+            Name = name;
+            AvailableSpots = MAXIMUM_SPOT_NUMBER;
+            Patients = new Queue<Patient>();
         }
+        public string Name { get; }
+        public int AvailableSpots { get; set; }
+        public Queue<Patient> Patients { get; }
 
         public void Add(Patient patient)
         {
-            if(this.availableSpots <= 0)
+            if(AvailableSpots <= 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Sorry this specialization is Full!");
@@ -49,15 +31,8 @@ namespace Hospital_System
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("You have been added in specialization according to your status");
-                if (patient.Status == 0)
-                {
-                    this.watingRegularPatients.Enqueue(patient);
-                }
-                else
-                {
-                    this.watingUrgentPatients.Enqueue(patient);
-                }
-                this.availableSpots--;
+                Patients.Enqueue(patient);
+                AvailableSpots--;
             }
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -65,25 +40,7 @@ namespace Hospital_System
 
         public void displayPatients()
         {
-            if (this.watingRegularPatients.Count != 0)
-            {
-                Console.WriteLine($"Patints that are in the {this.Name} specialization urgent list: ");
-            }
-            foreach (var p in watingRegularPatients)
-            {
-                Console.WriteLine($"Name: {p.Name}\tStatus: {(p.Status == 0 ? "regular" : "urgent")}");
-            }
-            Console.WriteLine();
-            if(this.watingUrgentPatients.Count != 0)
-            {
-                Console.WriteLine("------------------------------------------");
-                Console.WriteLine($"Patints that are in the {this.Name} specialization urgent list: ");
-            }
-            foreach (var p in watingUrgentPatients)
-            {
-                Console.WriteLine($"Name: {p.Name}\tStatus: {(p.Status == 1 ? "urgent" : "regular")}");
-            }
-            Console.WriteLine();
+            PatientPrinter.Print(Patients);
         }
 
     }
